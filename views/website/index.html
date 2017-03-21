@@ -1,0 +1,161 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="gb2312">
+  <title>米虫个人博客</title>
+  <meta name="keywords" content="个人博客" />
+  <meta name="description" content="神秘、俏皮。" />
+  <link href="/public/web/css/base.css" rel="stylesheet">
+  <link href="/public/web/css/index.css" rel="stylesheet">
+  <link href="/public/web/web/css/media.css" rel="stylesheet">
+  <link rel="stylesheet" href="/public/web/css/font-awesome.min.css">
+  <link href="/public/web/css/login.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">
+  <!--[if lt IE 9]>
+<script src="/public/web/js/modernizr.js"></script>
+<![endif]-->
+</head>
+
+<body>
+  <div class="ibody">
+    <header>
+      <h1>米虫博客</h1>
+      <h2>我脸上有多少笑容，背后就有多少故事....</h2>
+      <div class="logo">
+        <a href="/"></a>
+      </div>
+      <nav id="topnav"><a href="/">首页</a><a href="live">生活资讯</a><a href="newlist.html">技术分享</a><a href="newlist.html">关于我</a></nav>
+    </header>
+    <article>
+      <div class="banner">
+        <ul class="texts">
+          <p>The best life is use of willing attitude, a happy-go-lucky life. </p>
+          <p>最好的生活是用心甘情愿的态度，过随遇而安的生活。</p>
+        </ul>
+      </div>
+      <div class="bloglist">
+        <h2>
+          <p><span>推荐</span>文章</p>
+        </h2>
+        <div class="blogs">
+          <h3><a href="/">犯错了怎么办？</a></h3>
+          <figure><img src="/public/web/images/01.jpg"></figure>
+          <ul>
+            <p>看到昔日好友发了一篇日志《咎由自取》他说他是一个悲观者，感觉社会抛弃了他，脾气、性格在6年的时间里变化很大，很难适应这个社会。人生其实就是不断犯错的过程，在这个过程中不断的犯错，不断的吸取教训，不断的成长。也许日子里的惊涛骇浪，不过是人生中的水花摇晃，别用显微镜放大你的悲伤。</p>
+            <a href="/" target="_blank" class="readmore">阅读全文&gt;&gt;</a>
+          </ul>
+          <p class="autor"><span>作者：米虫</span><span>分类：【<a href="/">日记</a>】</span><span>浏览（<a href="/">459</a>）</span><span>评论（<a href="/">30</a>）</span></p>
+          <div class="dateview">2017-03-17</div>
+        </div>
+      </div>
+    </article>
+    <aside>
+      {% if userInfo.id %}
+      <div id="userInfo">
+        <div class="avatar"><a href="about.html"><span>关于他</span></a></div>
+       {%if userInfo.isAdmin %}
+        <div class="topspaceinfo" style="position: relative">
+          <h1 style="display: inline-block">{{userInfo.username}}</h1><a href="admin" style="text-shadow: 0;color: #faff20;font-size: 14px;position:absolute;right: 6px;top: 14px">进入后台管理</a>
+          <h2>您好，管理员！</h2>
+          <i class="fa fa-sign-out fa-3x" title="退出" onclick="logout()"></i>
+        </div>
+        {% else %}
+        <div class="topspaceinfo">
+          <h1 id="myname">{{userInfo.username}}</h1>
+          <h2>人生学会随缘，才能活得自在</h2>
+          <p>有你的陪伴才是我想要的未来....</p>
+          <i class="fa fa-sign-out fa-3x" title="退出" onclick="logout()"></i>
+        </div>
+        {% endif %}
+        <div class="about_c">
+          <p>网名：米虫 </p>
+          <p>职业：Web前端工程师 </p>
+          <p>籍贯：陕西-渭南</p>
+          <p>电话：1760123****</p>
+          <p>邮箱：240917020@qq.com</p>
+        </div>
+      </div>
+      {% else %}
+      <div class="rain" id="loginInfo">
+        <div class="border start">
+          <form>
+            <label for="email">账号</label>
+            <input name="username" type="text"  placeholder="" />
+            <label for="pass">密码</label>
+            <input name="password" type="password" placeholder="Password" />
+            <div id="login">
+                <p class="login" onclick="login()" />登录</p>
+                <span style="color:#666;margin:0 110px 5px 10px;cursor: pointer">忘记密码?</span>
+                <span style="color:#666;cursor: pointer" onclick="longtab(2)">立即注册>></span>
+            </div>
+            <div id="reg" class="hidden">
+                <p class="login" onclick="register()">注册</p>
+                <a href="/" style="color:cornflowerblue;margin:0 110px 5px 10px;cursor: pointer">返回</a>
+            </div>
+          </form>
+        </div>
+      </div>
+      {% endif %}
+      <div class="bdsharebuttonbox">
+        <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+        <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+        <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+        <a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a>
+        <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+        <a href="#" class="bds_more" data-cmd="more"></a>
+      </div>
+      <div class="tj_news">
+        <h2>
+          <p class="tj_t1">最新文章</p>
+        </h2>
+        <ul>
+          <li><a href="/">犯错了怎么办？</a></li>
+          <li><a href="/">两只蜗牛艰难又浪漫的一吻</a></li>
+          <li><a href="/">春暖花开-走走停停-发现美</a></li>
+          <li><a href="/">琰智国际-Nativ for Life官方网站</a></li>
+          <li><a href="/">个人博客模板（2014草根寻梦）</a></li>
+          <li><a href="/">简单手工纸玫瑰</a></li>
+          <li><a href="/">响应式个人博客模板（蓝色清新）</a></li>
+          <li><a href="/">蓝色政府（卫生计划生育局）网站</a></li>
+        </ul>
+        <h2>
+          <p class="tj_t2">推荐文章</p>
+        </h2>
+        <ul>
+          <li><a href="/">犯错了怎么办？</a></li>
+          <li><a href="/">两只蜗牛艰难又浪漫的一吻</a></li>
+          <li><a href="/">春暖花开-走走停停-发现美</a></li>
+          <li><a href="/">琰智国际-Nativ for Life官方网站</a></li>
+          <li><a href="/">个人博客模板（2014草根寻梦）</a></li>
+          <li><a href="/">简单手工纸玫瑰</a></li>
+          <li><a href="/">响应式个人博客模板（蓝色清新）</a></li>
+          <li><a href="/">蓝色政府（卫生计划生育局）网站</a></li>
+        </ul>
+      </div>
+      <div class="links">
+        <h2>
+          <p>友情链接</p>
+        </h2>
+        <ul>
+          <li><a href="/">米虫个人博客</a></li>
+          <li><a href="/">前端技术社区</a></li>
+        </ul>
+      </div>
+      <!--<div class="copyright">
+      <ul>
+        <p> Design by <a href="/">DanceSmile</a></p>
+        <p>蜀ICP备11002373号-1</p>
+        </p>
+      </ul>
+    </div>-->
+    </aside>
+    <script src="/public/web/js/silder.js"></script>
+    <script src="/public/web/js/index.js"></script>
+    <script src="/public/web/js/jquery.js"></script>
+    <div class="clear"></div>
+    <!-- 清除浮动 -->
+  </div>
+</body>
+
+</html>

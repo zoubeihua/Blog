@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>Table</title>
+		<link rel="stylesheet" href="/public/admin/plugins/layui/css/layui.css" media="all" />
+		<link rel="stylesheet" href="/public/admin/css/global.css" media="all">
+		<link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/font-awesome.4.6.0.css">
+		<link rel="stylesheet" href="/public/admin/css/table.css" />
+	</head>
+
+	<body>
+		<div class="admin-main">
+
+			<blockquote class="layui-elem-quote">
+				<span class="layui-breadcrumb">
+                    <a href="">用户管理</a>
+                    <a><cite>用户列表</cite></a>
+                </span>
+			</blockquote>
+
+                
+			<fieldset class="layui-elem-field">
+				<legend>数据列表</legend>
+				<div class="layui-field-box">
+					<table class="site-table table-hover">
+						<thead>
+							<tr>
+								<th><input type="checkbox" id="selected-all"></th>
+								<th>ID</th>
+								<th>用户名</th>
+								<th>密码</th>
+								<th>是否为管理员</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody>
+                            {% for user in userslist %}
+							<tr>
+								<td><input type="checkbox"></td>
+                                <td>{{user._id.toString()}}</td>
+                                <td>{{user.username}}</td>
+                                <td>{{user.password}}</td>
+                                {% if user.isAdmin %}
+                                    <td style="color: red">管理员</td>
+                                {% else %}
+                                    <td>普通用户</td>
+                                {% endif %}
+								<td>
+									<a href="/detail-1" target="_blank" class="layui-btn layui-btn-normal layui-btn-mini">预览</a>
+									<a href="/manage/article_edit_1" class="layui-btn layui-btn-mini">编辑</a>
+									<a href="javascript:;" data-id="1" data-opt="del" class="layui-btn layui-btn-danger layui-btn-mini">删除</a>
+								</td>
+							</tr>
+                            {% endfor %}
+						</tbody>
+					</table>
+
+				</div>
+			</fieldset>
+			<div class="admin-table-page">
+				<div id="page" class="page">
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript" src="/public/admin/plugins/layui/layui.js"></script>
+		<script>
+			layui.config({
+				base: '/public/admin/plugins/layui/modules/'
+			});
+
+			layui.use(['icheck', 'laypage','layer','element'], function() {
+				var $ = layui.jquery,
+                    element = layui.element(),
+					laypage = layui.laypage,
+					layer = parent.layer === undefined ? layui.layer : parent.layer;
+				$('input').iCheck({
+					checkboxClass: 'icheckbox_flat-green'
+				});
+
+				//page
+				laypage({
+					cont: 'page',
+					pages: {{countpage}} //总页数
+						,
+					groups: 5 //连续显示分页数
+						,                      
+                    curr: function(){ //通过url获取当前页，也可以同上（pages）方式获取
+                            var page = location.search.match(/page=(\d+)/);
+                             return page ? page[1] : 1;
+                    }(),
+					jump: function(obj, first) {
+						//得到了当前页，用于向服务端请求对应数据
+						var curr = obj.curr;
+						if(!first) {
+                           onpage = curr;
+							// layer.msg('第 '+ obj.curr +' 页');
+                            location.href = '?page='+obj.curr;
+						}
+					}
+				});
+
+				$('#search').on('click', function() {
+					parent.layer.alert('你点击了搜索按钮')
+				});
+
+				$('#add').on('click', function() {
+					$.get('temp/edit-form.html', null, function(form) {
+						layer.open({
+							type: 1,
+							title: '添加表单',
+							content: form,
+							btn: ['保存', '取消'],
+							area: ['600px', '400px'],
+							maxmin: true,
+							yes: function(index) {
+								console.log(index);
+							},
+							full: function(elem) {
+								var win = window.top === window.self ? window : parent.window;
+								$(win).on('resize', function() {
+									var $this = $(this);
+									elem.width($this.width()).height($this.height()).css({
+										top: 0,
+										left: 0
+									});
+									elem.children('div.layui-layer-content').height($this.height() - 95);
+								});
+							}
+						});
+					});
+				});
+
+				$('#import').on('click', function() {
+					var that = this;
+					var index = layer.tips('只想提示地精准些', that,{tips: [1, 'white']});
+					$('#layui-layer'+index).children('div.layui-layer-content').css('color','#000000');
+				});
+
+				$('.site-table tbody tr').on('click', function(event) {
+					var $this = $(this);
+					var $input = $this.children('td').eq(0).find('input');
+					$input.on('ifChecked', function(e) {
+						$this.css('background-color', '#EEEEEE');
+					});
+					$input.on('ifUnchecked', function(e) {
+						$this.removeAttr('style');
+					});
+					$input.iCheck('toggle');
+				}).find('input').each(function() {
+					var $this = $(this);
+					$this.on('ifChecked', function(e) {
+						$this.parents('tr').css('background-color', '#EEEEEE');
+					});
+					$this.on('ifUnchecked', function(e) {
+						$this.parents('tr').removeAttr('style');
+					});
+				});
+				$('#selected-all').on('ifChanged', function(event) {
+					var $input = $('.site-table tbody tr td').find('input');
+					$input.iCheck(event.currentTarget.checked ? 'check' : 'uncheck');
+				});
+			});
+
+           
+		</script>
+	</body>
+
+</html>
