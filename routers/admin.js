@@ -5,6 +5,7 @@ var Category = require('../models/Category');
 router.use(function(req,res,next){
     if(!req.userInfo.isAdmin){
         res.send('<h1 style="color:red;">对不起，只有管理员用户才能登录!</h2>')
+        return;
     }
     next();
 })
@@ -31,6 +32,9 @@ router.get('/userlist',function(req,res,next){
      * 每页显示两条数据
      * 1: 1-2 skip:0 -> 公式 (当前页-1)*limit
      * 2: 3-4 skip:2
+     * sort({id,Number}) Number只有 1或-1
+     * 1:代表升序 从小到大排序
+     * -1: 代表降序 从大到小排序
      */
     var page = req.query.page || 1;
     var limit = 10;
@@ -39,7 +43,7 @@ router.get('/userlist',function(req,res,next){
     User.count().then(function(count){
         //计算总页数
         countpage = Math.ceil(count / limit);
-        User.find().limit(limit).skip(skip).then(function(users){
+        User.find().sort({_id:-1}).limit(limit).skip(skip).then(function(users){
             res.render('admin/userlist',{
             userslist:users,
             countpage:countpage,
@@ -75,11 +79,9 @@ router.get('/categoryList',function(req,res,next){
     var skip = (page - 1) * limit;
     var countpage = 0;
     Category.count().then(function(count){
-        //计算总页数
-        
+        //计算总页数  
         countpage = Math.ceil(count / limit);
-        console.log(countpage)
-        Category.find().limit(limit).skip(skip).then(function(navtitle){
+        Category.find().sort({_id:-1}).limit(limit).skip(skip).then(function(navtitle){
             res.render('admin/categoryList',{
             categoryList:navtitle,
             countpage:countpage,
@@ -88,7 +90,27 @@ router.get('/categoryList',function(req,res,next){
     })  
 });
 })
-
+/**
+ * 分类修改
+ */
+router.get('/category/Edit',function(req,res,next){
+    //获取用户id的信息 并且用表单的形式展现出来
+    var id = req.query.id || '';
+    Category.findOne({
+        _id:id
+    }).then(function(category){
+       if(!category){
+           res.render('/admin/error',{
+               message:'分类信息不存在'
+           })
+       }else{
+           res.render('admin/categoryEdit',{
+               category:category
+           })
+       }
+    })
+   
+})
 
 
 
