@@ -35,13 +35,13 @@
 						</thead>
 						<tbody>
                             {% for category in categoryList %}
-							<tr>
+							<tr id="cate_{{category._id.toString()}}">
 								<td><input type="checkbox"></td>
                                 <td>{{category._id.toString()}}</td>
                                 <td>{{category.navtitle}}</td>
 								<td>
-									<a href="/manage/article_edit_1" class="layui-btn layui-btn-mini">编辑</a>
-									<a href="javascript:;" data-id="1" data-opt="del" class="layui-btn layui-btn-danger layui-btn-mini">删除</a>
+									<a href="/admin/category/Edit?id={{category._id.toString()}}" class="layui-btn layui-btn-mini">编辑</a>
+									<a class="layui-btn layui-btn-danger layui-btn-mini del" id="{{category._id.toString()}}" >删除</a>
 								</td>
 							</tr>
                             {% endfor %}
@@ -90,70 +90,32 @@
                             location.href = '?page='+obj.curr;
 						}
 					}
-				});
-
-				$('#search').on('click', function() {
-					parent.layer.alert('你点击了搜索按钮')
-				});
-
-				$('#add').on('click', function() {
-					$.get('temp/edit-form.html', null, function(form) {
-						layer.open({
-							type: 1,
-							title: '添加表单',
-							content: form,
-							btn: ['保存', '取消'],
-							area: ['600px', '400px'],
-							maxmin: true,
-							yes: function(index) {
-								console.log(index);
+				});	
+				
+				$('.del').on('click', function() {
+					var id = this.id;
+					$.ajax({
+							type: "GET",
+							url: '/admin/Category/Del?id=' + id,
+							success: function (result) {
+								layer.alert(result.msg, {
+									title: '温馨提示'
+								})
+								$("#cate_"+ result.id).hide();
 							},
-							full: function(elem) {
-								var win = window.top === window.self ? window : parent.window;
-								$(win).on('resize', function() {
-									var $this = $(this);
-									elem.width($this.width()).height($this.height()).css({
-										top: 0,
-										left: 0
-									});
-									elem.children('div.layui-layer-content').height($this.height() - 95);
-								});
+							error: function(data) {
+							alert("error:"+data);
 							}
 						});
-					});
 				});
 
-				$('#import').on('click', function() {
-					var that = this;
-					var index = layer.tips('只想提示地精准些', that,{tips: [1, 'white']});
-					$('#layui-layer'+index).children('div.layui-layer-content').css('color','#000000');
-				});
-
-				$('.site-table tbody tr').on('click', function(event) {
-					var $this = $(this);
-					var $input = $this.children('td').eq(0).find('input');
-					$input.on('ifChecked', function(e) {
-						$this.css('background-color', '#EEEEEE');
-					});
-					$input.on('ifUnchecked', function(e) {
-						$this.removeAttr('style');
-					});
-					$input.iCheck('toggle');
-				}).find('input').each(function() {
-					var $this = $(this);
-					$this.on('ifChecked', function(e) {
-						$this.parents('tr').css('background-color', '#EEEEEE');
-					});
-					$this.on('ifUnchecked', function(e) {
-						$this.parents('tr').removeAttr('style');
-					});
-				});
 				$('#selected-all').on('ifChanged', function(event) {
 					var $input = $('.site-table tbody tr td').find('input');
 					$input.iCheck(event.currentTarget.checked ? 'check' : 'uncheck');
 				});
+						
 			});
-
+			
            
 		</script>
 	</body>
