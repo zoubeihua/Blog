@@ -20,7 +20,7 @@
             <blockquote class="layui-elem-quote">
 				<span class="layui-breadcrumb">
                     <a href="">分类管理</a>
-                    <a><cite>添加分裂</cite></a>
+                    <a><cite>添加分类</cite></a>
                 </span>
 			</blockquote>
 			<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
@@ -38,7 +38,7 @@
 				<div class="layui-form-item">
 					<div class="layui-input-block">
 						<button class="layui-btn" lay-submit="" lay-filter="navtitle">立即提交</button>
-						<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+						<!--<button type="reset" class="layui-btn layui-btn-primary">重置</button>-->
 					</div>
 				</div>
 			</form>
@@ -68,7 +68,8 @@
                         success: function (result) {
                             layer.alert(result.msg, {
                                 title: '温馨提示'
-                            })    
+                            })
+							$("input[name=navtitle]").val("");
                         },
                         error: function(data) {
                         alert("error:"+data);
