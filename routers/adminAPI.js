@@ -14,7 +14,7 @@ router.use(function(req,res,next){
     next();
 })
 
-//添加前端导航标题请求
+//添加分类标题请求
 router.post('/Category/Add',function(req,res,next){
     var navtitle = req.body.navtitle || '';
     if(navtitle == ''){
@@ -44,5 +44,63 @@ router.post('/Category/Add',function(req,res,next){
             res.json(responseData);
     })
 })
+//分类修改请求
+router.post('/Category/Edit',function(req,res,next){
+     var navtitle = req.body.navtitle || '';
+     var id = req.body.id || '';
+     Category.findOne({
+         _id:id
+     }).then(function(category){
+        if(!category){
+            responseData.code = 3;
+            responseData.msg = '分类信息不存在';
+            res.json(responseData);
+            return Promise.reject();
+        }else{
+            if(navtitle == category.navtitle){
+                responseData.code = 4;
+                responseData.msg = '您修改的还是之前的分类名称';
+                res.json(responseData);
+                return Promise.reject();
+            }else{
+                //要修改的名字是否和数据库重名
+                return Category.findOne({
+                    _id:{$ne:id},
+                    navtitle:navtitle
+                });
+            }
+        }
+     }).then(function(sameCategory){
+         if(sameCategory){
+            responseData.code = 5;
+            responseData.msg = '您修改的名字已被使用';
+            res.json(responseData);
+            return Promise.reject();
+         }else{
+             return Category.update({
+                 _id:id
+             },{
+                navtitle:navtitle 
+             });
+         }
+     }).then(function(){
+            responseData.code = 6;
+            responseData.msg = '修改成功';
+            responseData.url = '/admin/categoryList';
+            res.json(responseData);
+     })
+});
 
+//分类列表删除请求
+router.get('/Category/Del',function(req,res){
+    var id = req.query.id || '';
+    Category.remove({
+        _id:id
+    }).then(function(){
+        responseData.code = 7;
+        responseData.msg = '删除成功';
+        responseData.id = id;
+        res.json(responseData);
+    })
+});
 module.exports = router;
