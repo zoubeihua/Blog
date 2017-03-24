@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>分类列表</title>
+		<link rel="stylesheet" href="/public/admin/plugins/layui/css/layui.css" media="all" />
+		<link rel="stylesheet" href="/public/admin/css/global.css" media="all">
+		<link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/font-awesome.4.6.0.css">
+		<link rel="stylesheet" href="/public/admin/css/table.css" />
+	</head>
+
+	<body>
+		<div class="admin-main">
+
+			<blockquote class="layui-elem-quote">
+				<span class="layui-breadcrumb">
+                    <a href="">分类管理</a>
+                    <a><cite>分类列表</cite></a>
+                </span>
+			</blockquote>
+
+                
+			<fieldset class="layui-elem-field">
+				<legend>数据列表</legend>
+				<div class="layui-field-box">
+					<table class="site-table table-hover">
+						<thead>
+							<tr>
+								<th><input type="checkbox" id="selected-all"></th>
+								<th>ID</th>
+								<th>导航名</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody>
+                            {% for category in categoryList %}
+							<tr id="cate_{{category._id.toString()}}">
+								<td><input type="checkbox"></td>
+                                <td>{{category._id.toString()}}</td>
+                                <td>{{category.navtitle}}</td>
+								<td>
+									<a href="/admin/category/Edit?id={{category._id.toString()}}" class="layui-btn layui-btn-mini">编辑</a>
+									<a class="layui-btn layui-btn-danger layui-btn-mini del" id="{{category._id.toString()}}" >删除</a>
+								</td>
+							</tr>
+                            {% endfor %}
+						</tbody>
+					</table>
+
+				</div>
+			</fieldset>
+			<div class="admin-table-page">
+				<div id="Catepage" class="page">
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript" src="/public/admin/plugins/layui/layui.js"></script>
+		<script>
+			layui.config({
+				base: '/public/admin/plugins/layui/modules/'
+			});
+
+			layui.use(['icheck', 'laypage','layer','element'], function() {
+				var $ = layui.jquery,
+                    element = layui.element(),
+					laypage = layui.laypage,
+					layer = parent.layer === undefined ? layui.layer : parent.layer;
+				$('input').iCheck({
+					checkboxClass: 'icheckbox_flat-green'
+				});
+
+				//page
+				laypage({
+					cont: 'Catepage',
+					pages: {{countpage}} //总页数
+						,
+					groups: 5 //连续显示分页数
+						,                      
+                    curr: function(){ //通过url获取当前页，也可以同上（pages）方式获取
+                            var page = location.search.match(/page=(\d+)/);
+                             return page ? page[1] : 1;
+                    }(),
+					jump: function(obj, first) {
+						//得到了当前页，用于向服务端请求对应数据
+						var curr = obj.curr;
+						if(!first) {
+                           onpage = curr;
+							// layer.msg('第 '+ obj.curr +' 页');
+                            location.href = '?page='+obj.curr;
+						}
+					}
+				});	
+				
+				$('.del').on('click', function() {
+					var id = this.id;
+					$.ajax({
+							type: "GET",
+							url: '/admin/Category/Del?id=' + id,
+							success: function (result) {
+								layer.alert(result.msg, {
+									title: '温馨提示'
+								})
+								$("#cate_"+ result.id).hide();
+							},
+							error: function(data) {
+							alert("error:"+data);
+							}
+						});
+				});
+
+				$('#selected-all').on('ifChanged', function(event) {
+					var $input = $('.site-table tbody tr td').find('input');
+					$input.iCheck(event.currentTarget.checked ? 'check' : 'uncheck');
+				});
+						
+			});
+			
+           
+		</script>
+	</body>
+
+</html>
