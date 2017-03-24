@@ -45,21 +45,32 @@ var navs = [{
 		"title": "分类列表",
 		"icon": "fa-th",
 		"href": "categoryList"
-	},
-		{
-		"title": "Datatable",
-		"icon": "fa-table",
-		"href": "begtable"
-	}, {
-		"title": "Navbar组件",
-		"icon": "fa-navicon",
-		"href": "navbar"
-	}]
+	}
+	// ,
+	// 	{
+	// 	"title": "Datatable",
+	// 	"icon": "fa-table",
+	// 	"href": "begtable"
+	// }, {
+	// 	"title": "Navbar组件",
+	// 	"icon": "fa-navicon",
+	// 	"href": "navbar"
+	// }
+	]
 }, {
-	"title": "第三方组件",
-	"icon": "&#x1002;",
+	"title": "文章管理",
+	"icon": "&#xe62a;",
 	"spread": false,
 	"children": [{
+		"title": "添加文章",
+		"icon": "fa-wpforms",
+		"href": "contentAdd"
+	},{
+		"title": "文章列表",
+		"icon": "fa-list",
+		"href": "contentList"
+	},
+		{
 		"title": "iCheck组件",
 		"icon": "fa-check-square-o",
 		"href": "icheck"
