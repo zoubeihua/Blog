@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var User = require('../models/User');
 var Category = require('../models/Category');
+var Content = require('../models/Content');
 
 //声明一个信息提示对象
 var responseData;
@@ -52,13 +53,13 @@ router.post('/Category/Edit',function(req,res,next){
          _id:id
      }).then(function(category){
         if(!category){
-            responseData.code = 3;
+            responseData.code = 2;
             responseData.msg = '分类信息不存在';
             res.json(responseData);
             return Promise.reject();
         }else{
             if(navtitle == category.navtitle){
-                responseData.code = 4;
+                responseData.code = 3;
                 responseData.msg = '您修改的还是之前的分类名称';
                 res.json(responseData);
                 return Promise.reject();
@@ -72,7 +73,7 @@ router.post('/Category/Edit',function(req,res,next){
         }
      }).then(function(sameCategory){
          if(sameCategory){
-            responseData.code = 5;
+            responseData.code = 1;
             responseData.msg = '您修改的名字已被使用';
             res.json(responseData);
             return Promise.reject();
@@ -84,7 +85,7 @@ router.post('/Category/Edit',function(req,res,next){
              });
          }
      }).then(function(){
-            responseData.code = 6;
+            responseData.code = 0;
             responseData.msg = '修改成功';
             responseData.url = '/admin/categoryList';
             res.json(responseData);
@@ -97,10 +98,15 @@ router.get('/Category/Del',function(req,res){
     Category.remove({
         _id:id
     }).then(function(){
-        responseData.code = 7;
+        responseData.code = 4;
         responseData.msg = '删除成功';
         responseData.id = id;
         res.json(responseData);
     })
 });
+
+//内容管理 保存逻辑
+router.post('/Content/Add',function(req,res){
+    console.log(req.body)
+})
 module.exports = router;

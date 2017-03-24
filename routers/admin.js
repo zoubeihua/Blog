@@ -2,6 +2,7 @@
 var router = express.Router();
 var User = require('../models/User');
 var Category = require('../models/Category');
+var Content = require('../models/Content');
 router.use(function(req,res,next){
     if(!req.userInfo.isAdmin){
         res.send('<h1 style="color:red;">对不起，只有管理员用户才能登录!</h2>')
@@ -112,8 +113,16 @@ router.get('/category/Edit',function(req,res,next){
    
 })
 
-
-
+/**
+ * 文章内容的添加
+ */
+router.get('/contentAdd',function(req,res,next){
+    Category.find().sort({_id:-1}).then(function(categories){
+        res.render('admin/contentAdd',{
+            categories:categories
+        });
+    })
+})
 
 
 router.get('/navbar',function(req,res,next){
