@@ -105,8 +105,79 @@ router.get('/Category/Del',function(req,res){
     })
 });
 
-//内容管理 保存逻辑
+//文章内容管理 保存逻辑
 router.post('/Content/Add',function(req,res){
-    console.log(req.body)
+    var title = req.body.title;
+    if(title == ''){
+        responseData.code = 1;
+        responseData.msg = '标题不能为空';
+        res.json(responseData);
+        return;
+    }
+    //保存数据库中
+    new Content({
+        category:req.body.category,
+        title:req.body.title,
+        user:req.userInfo.id.toString(),
+        AddTime:req.body.date,
+        description:req.body.description,
+        content:req.body.content
+    }).save().then(function(NewContent){
+        responseData.code = 0;
+        responseData.msg = '文章发表成功'
+        res.json(responseData);
+
+    })
+})
+
+//文章内容修改逻辑
+router.post('/Content/Edit',function(req,res){
+    var id = req.body.id;
+    if(req.body.title == ''){
+        responseData.code = 1;
+        responseData.msg = '标题不能为空';
+        res.json(responseData);
+        return;
+    }
+    if(req.body.description == ''){
+        responseData.code = 2;
+        responseData.msg = '文章简介不能为空';
+        res.json(responseData);
+        return;
+    }
+    if(req.body.content == ''){
+        responseData.code = 3;
+        responseData.msg = '文章内容不能为空';
+        res.json(responseData);
+        return;
+    }
+    Content.update({
+        _id:id
+    },{
+        category:req.body.category,
+        title:req.body.title,
+        user:req.userInfo.id.toString(),
+        AddTime:req.body.date,
+        description:req.body.description,
+        content:req.body.content
+    }).then(function(){
+        responseData.code = 0;
+        responseData.msg = '文章修改成功';
+        responseData.url = '/admin/contentList'
+        res.json(responseData);
+    })
+})
+
+//文章删除 逻辑
+router.get('/Content/Del',function(req,res){
+    var id = req.query.id || '';
+    Content.remove({
+        _id:id
+    }).then(function(){
+        responseData.code = 4;
+        responseData.msg = '删除成功';
+         responseData.id = id;
+        res.json(responseData);
+    })
 })
 module.exports = router;
