@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>文章添加</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+
+		<link rel="stylesheet" href="/public/admin/plugins/layui/css/layui.css" media="all" />
+		<link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/font-awesome.4.6.0.css">
+	</head>
+
+	<body>
+		<div style="margin: 15px;">
+			 <blockquote class="layui-elem-quote">
+				<span class="layui-breadcrumb">
+                    <a href="">文章管理</a>
+                     <a href="/admin/contentList">文章列表</a>
+                    <a><cite>编辑文章</cite></a>
+                </span>
+			</blockquote>
+			<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+				<legend>文章内容编辑</legend>
+			</fieldset>
+			<form class="layui-form" action="">
+                <div class="layui-form-item">
+					<label class="layui-form-label">文章分类</label>
+					<div class="layui-input-block">
+						<select name="category" lay-filter="aihao">
+                            {% for categories in categorys %}
+                                {% if content.category.navtitle == categories.navtitle %}
+								 	<option value="{{categories._id.toString()}}" selected>{{categories.navtitle}}</option>
+								 {% else %}
+                                	<option value="{{categories._id.toString()}}">{{categories.navtitle}}</option>
+								{% endif %}
+                            {%endfor%}
+						</select>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">文章标题</label>
+					<input type="hidden" name="id" value="{{content._id.toString()}}">
+					<div class="layui-input-block">
+						<input type="text" name="title" value="{{content.title}}" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<div class="layui-inline">
+						<label class="layui-form-label">日期</label>
+						<div class="layui-input-block">
+							<input type="text" name="date" id="date" value="{{content.AddTime|date('Y-m-d H:i:s',-8*60)}}" placeholder="yyyy-mm-dd"  class="layui-input" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+						</div>
+					</div>
+				</div>
+				<div class="layui-form-item layui-form-text">
+					<label class="layui-form-label">简介</label>
+					<div class="layui-input-block">
+						<textarea placeholder="请输入简介内容"  name="description" id="description" class="layui-textarea">{{content.description}}</textarea>
+					</div>
+				</div>
+				<div class="layui-form-item layui-form-text">
+					<label class="layui-form-label">文章内容</label>
+					<div class="layui-input-block">
+						<textarea class="layui-textarea layui-hide" name="content"  id="content">{{content.content}}</textarea>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<div class="layui-input-block">
+						<button class="layui-btn" lay-submit="" lay-filter="editcontent">立即提交</button>
+					</div>
+				</div>
+			</form>
+		</div>
+		<script type="text/javascript" src="/public/admin/plugins/layui/layui.js"></script>
+		<script>
+			layui.use(['form', 'layedit', 'laydate','element'], function() {
+				var form = layui.form(),
+					layer = layui.layer,
+                    $ = layui.jquery,
+                    element = layui.element(),
+					layedit = layui.layedit,
+					laydate = layui.laydate;
+ 
+				//创建一个编辑器
+				var editIndex = layedit.build('content');
+               
+				//监听提交
+				form.on('submit(editcontent)', function(data) {
+					var content = '';
+                    content = layedit.getContent(editIndex)
+                    var requestData = data.field;
+                    requestData.content = content;
+                    console.log(requestData)
+                    $.ajax({
+                        type: "POST",
+                        url: '/admin/Content/Edit',
+                        data: requestData,
+                        success: function (result) {
+							if(result.code == 0){
+								layer.open({
+									content: result.msg,
+									success: function(layero, index){
+										setTimeout(function() {
+											window.location.href = result.url;
+										}, 1000);
+									}
+								}); 
+							}else{
+								 layer.alert(result.msg, {
+									title: '温馨提示'
+								})	
+							}
+                        },
+                        error: function(data) {
+                        alert("error:"+data);
+                        }
+                    }); 
+					return false;
+				});
+			});
+		</script>
+	</body>
+
+</html>
