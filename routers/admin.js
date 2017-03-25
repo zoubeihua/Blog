@@ -123,7 +123,44 @@ router.get('/contentAdd',function(req,res,next){
         });
     })
 })
+ /**
+  * 文章列表显示
+  */
+  router.get('/contentList',function(req,res,next){
+        var page = req.query.page || 1;
+        var limit = 10;
+        var skip = (page - 1) * limit;
+        var countpage = 0;
+        Content.count().then(function(count){
+            //计算总页数
+            countpage = Math.ceil(count / limit);
+            Content.find().sort({_id:-1}).limit(limit).skip(skip).populate(['category','user']).then(function(contents){
+                res.render('admin/contentList',{
+                contentlist:contents,
+                countpage:countpage,
+                curpage:page
+            });
+        })  
+    });
+  })
 
+/**
+ * 文章修改逻辑
+ */
+router.get('/content/Edit',function(req,res,next){
+    var id = req.query.id || '';
+    var categorys = [];
+     Category.find().sort({_id:-1}).then(function(categories){
+        categorys = categories;
+       return  Content.findOne({ _id:id}).populate(['category','user'])
+    }).then(function(content){
+        console.log(content);
+        res.render('admin/contentEdit',{
+            categorys:categorys,
+            content:content
+        })
+    })
+})
 
 router.get('/navbar',function(req,res,next){
    res.render('admin/navbar');
