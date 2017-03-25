@@ -5,7 +5,7 @@ module.exports = new mongoose.Schema({
    //分类 是一个关联字段 -分类管理标题的id
    category:{
        type:mongoose.Schema.Types.ObjectId,
-       ref:'Content'
+       ref:'Category'
    },
     //标题
     title:String,
