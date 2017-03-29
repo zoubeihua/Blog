@@ -20,21 +20,28 @@
     <h1>米虫博客</h1>
     <h2>我脸上有多少笑容，背后就有多少故事....</h2>
     <div class="logo"><a href="/"></a></div>
-    <nav id="topnav"><a href="/">首页</a><a href="live">生活资讯</a><a href="newlist.html">技术分享</a><a href="newlist.html">关于我</a></nav>
+    <nav id="topnav">
+      <a href="/">首页</a>
+      <a href="live" id="topnav_current">生活资讯</a>
+      <a href="live">技术分享</a>
+      <a href="live">关于我</a>
+    </nav>
   </header>
   <article>
     <h2 class="about_h">您现在的位置是：<a href="/">首页</a>><a href="1/">生活资讯</a></h2>
     <div class="bloglist">
+       {% for content in contents %}
       <div class="newblog">
         <ul>
-          <h3><a href="/">个人博客从简不繁</a></h3>
-          <div class="autor"><span>作者：米虫</span><span>分类：[<a href="/">日记</a>]</span><span>浏览（<a href="/">459</a>）</span><span>评论（<a href="/">30</a>）</span></div>
-          <p>十一月中旬开始，排名突然下降了，网站“个人博客”关键词排名从第一页第二名滑落到100页以后了，个人博客这个关键词百度已经搜不到了，仅有google、搜狗... <a href="/" target="_blank" class="readmore">全文</a></p>
+          <h3><a href="/">{{content.title}}</a></h3>
+          <div class="autor"><span>作者：{{userInfo.username}}</span><span>分类：[<a href="/">{{content.category.navtitle}}</a>]</span><span>浏览（<a href="/">{{content.views}}</a>）</span><span>评论（<a href="/">30</a>）</span></div>
+          <p>{{content.description}}<a href="/conte?contentid={{content._id.toString()}}" class="readmore">全文</a></p>
         </ul>
-        <figure><img src="/public/web/images/001.jpg" ></figure>
-        <div class="dateview">2014-04-08</div>
+        <figure><img src="/public/web/images/002.jpg" ></figure>
+        <div class="dateview">{{content.AddTime|date('Y-m-d',-8*60)}}</div>
       </div>
-      <div class="newblog">
+      {% endfor %}
+      <!--<div class="newblog">
         <ul>
           <h3><a href="/">再看4年前某婚恋网站我的十条征婚条件</a></h3>
           <div class="autor"><span>作者：米虫</span><span>分类：[<a href="/">日记</a>]</span><span>浏览（<a href="/">459</a>）</span><span>评论（<a href="/">30</a>）</span></div>
@@ -105,16 +112,15 @@
         </ul>
         <figure><img src="/public/web/images/007.jpg" ></figure>
         <div class="dateview">2014-04-08</div>
-      </div>
+      </div>-->
     </div>
-    <div class="page"><a title="Total record"><b>113</b></a><b>1</b><a href="/">2</a><a href="/">3</a><a href="/">4</a><a href="/">5</a><a href="/">&gt;</a><a href="/">&gt;&gt;</a></div>
+    <div class="page" id="livepage"></div>
   </article>
   <aside>
     <div class="rnav">
-      <li class="rnav1 "><a href="/">日记</a></li>
-      <li class="rnav2 "><a href="/">欣赏</a></li>
-      <li class="rnav3 "><a href="/">程序人生</a></li>
-      <li class="rnav4 "><a href="/">经典语录</a></li>
+      {% for cate in categories%}
+        <li class="rnav{{loop.index}}"><a href="?category={{cate.id}}">{{cate.navtitle}}</a></li>   
+      {%endfor%}
     </div>
     <div class="ph_news">
       <h2>
@@ -205,7 +211,22 @@
       </ul>
     </div>-->
   </aside>
+  <script>
+      // var count = {{count}}; //总条数
+      // var curpage = {{page}};//当前页
+      // var countpage = {{countpage}};//总页数
+      window.onload = function() {
+          var pages = new Config();
+          pages.Page({
+            id:'livepage',
+            curpage:'{{page}}',
+            countpage:'{{countpage}}',
+            category:'{{category}}' || ''
+          })
+      }
+    </script>
   <script src="/public/web/js/silder.js"></script>
+  <script src="/public/web/js/page.js"></script>
   <div class="clear"></div>
   <!-- 清除浮动 --> 
 </div>
