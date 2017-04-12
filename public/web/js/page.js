@@ -69,10 +69,11 @@ Config.prototype.Page = function(opt){
 
 //下一页
 Config.prototype.next = function(obj,opt){
-    var pnext = opt.setting.countpage;
-    var carrier = pnext;
+    var curpages = opt.setting.countpage;
+    var pnext = opt.setting.curpage;
+    var carrier = curpages;
     pnext++;
-    if(pnext > opt.setting.curpage){
+    if(pnext > curpages){
         pnext = carrier;
     }
     obj.href = '?category='+opt.setting.category+'&page=' + pnext;
@@ -87,7 +88,7 @@ Config.prototype.last = function(obj,opt){
 Config.prototype.prev = function(obj,opt){
     var pprev = opt.setting.curpage;
     pprev--;
-    if(pprev < opt.setting.curpage){
+    if(pprev < 0){
         pprev = 1;
     }
    window.location.href = '?category='+opt.setting.category+'&page=' + pprev;
