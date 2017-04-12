@@ -64,14 +64,12 @@ a.readmore { color: #f55f77; margin-left: 10px; font-weight: bold }
 ul.infos { overflow: hidden; margin: 20px 0; line-height: 28px; font-size: 14px; text-indent: 2em; color: #525554 }
 ul.infos p { margin-bottom: 10px }
 ul.infos p img { display: block; margin: auto }
+.contents{margin-top: 20px}
 .keybq { background: url(../images/6264.png) no-repeat 10px center #F8F8F8; line-height: 30px; height: 30px; padding-left: 40px; border: 1px solid #F0F0F0; margin: 20px 0; }
 .keybq span { color: #099 }
 .nextinfo { line-height: 24px; }
 .nextinfo a, .otherlink li a { color: #756f71 }
 .otherlink h2 { border-bottom: #099 2px solid; line-height: 40px; font-size: 12px; background: url(../images/5794.png) 10px center no-repeat; padding-left: 40px; color: #099 }
-.otherlink ul { margin: 10px 0 }
-.otherlink li { line-height: 24px; height: 24px; display: block; width: 290px; float: left; overflow: hidden; margin-right: 30px; }
-.otherlink li a:hover, .nextinfo a:hover { text-decoration: underline }
 .template { margin: 0 10px 0 10px; }
 .template h3 { border-bottom: #333 2px solid; width: 100%; overflow: hidden; font-size: 14px; font-family: "΢���ź�"; display: block; clear: both; margin-bottom: 10px; position: relative }
 .template h3 p { background: #474645; width: 180px; height: 25px; line-height: 25px; color: #fff; text-align: center; box-shadow: #999 4px 5px 1px; }
@@ -81,3 +79,87 @@ ul.infos p img { display: block; margin: auto }
 .template li span { color: #fff; display: block; text-align: center; margin-top: 5px; width: 142px; overflow: hidden; text-overflow: ellipsis; height: 14px }
 .template li:hover { background: #666; padding: 5px 5px 6px 5px; }
 a.more { position: absolute; right: 0; top: 4px; color: #666; font-size: 12px }
+
+/*
+评论样式
+*/
+.comment{
+    width: 100%;
+    margin-top: 10px;
+}
+.comment .headImage,.comment .comments{
+    float: left;
+}
+.comment .headImage{
+    width: 8%;
+    padding-right: 4px;
+    box-sizing: border-box;
+}
+.comment .headImage img{
+    width: 100%;
+    border-radius: 50%;
+}
+.comment .comments{
+    width: 92%;
+    border:2px #ccd4d9 solid;
+    padding: 4px 0 0 4px;
+    box-sizing: border-box;
+    height: 120px;
+}
+.comment .comments textarea{
+    width: 100%;
+    border: none;
+    resize: none;
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: 70px;
+    outline:none;
+    color:#666;
+    font-size: 14px;
+}
+.comment .comments .commsubmit{
+    background-color: #fbfbfb;
+    height: 38px;
+    margin-left: -4px;
+    border-top: solid 1px #f2f2f2;
+}
+.comment .comments .commsubmit p{
+    width: 100px;
+    height: 38px;
+    background-color: #45B6F7;
+    color:#fff;
+    font-size: 16px;
+    text-align: center;
+    line-height: 38px;
+    float: right;
+    cursor: pointer;
+}
+.commList{
+    margin-top:20px;
+}
+.commList, .commList li{
+    width:100%;
+}
+.commList li{
+    padding: 10px 0;
+    border-bottom:1px #ccc dashed;
+}
+.commList li img{
+    float: left;
+    width: 8%;
+    border-radius:50%;
+    overflow: hidden;
+}
+.commList li p{
+    float: left;
+    width:70%;
+    color:#666;
+    padding: 0 10px;
+    box-sizing: border-box;
+}
+.commList .times{
+    float:right;
+    width: 22%;
+    text-align: right;
+    box-sizing: border-box;
+}
