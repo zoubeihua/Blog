@@ -70,7 +70,7 @@ router.get('/live',function(req,res,next){
         data.contents = contents;
         res.render('website/live',data); 
     })
-})
+});
 
 //全文内容
 router.get('/conte',function(req,res,next){
@@ -79,8 +79,15 @@ router.get('/conte',function(req,res,next){
         _id:contentid
     }).then(function(content){
         data.content = content;
-        console.log(data)
-        res.render('website/Contentdetails',data); 
+        content.views++;
+        content.save();
+        Category.findOne({
+           _id:content.category
+        }).then(function(nvatitle){
+            data.navtitle = nvatitle.navtitle;
+            res.render('website/Contentdetails',data); 
+        })
     })
-})
+});
+
 module.exports = router;
