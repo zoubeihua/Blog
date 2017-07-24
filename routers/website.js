@@ -85,7 +85,7 @@ router.get('/conte',function(req,res,next){
            _id:content.category
         }).then(function(nvatitle){
             data.navtitle = nvatitle.navtitle;
-            res.render('website/Contentdetails',data); 
+            res.render('website/Contentdetails',data);
         })
     })
 });

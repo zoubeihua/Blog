@@ -181,23 +181,5 @@ router.get('/Content/Del', function (req, res) {
     })
 });
 
-//评论接口
-router.post('/comment', function (req, res) {
-    var commentId = req.body.commentid || '';
-    var commentData = {
-        username: req.userInfo.username,
-        commenTime: new Date(),
-        commContent: req.body.commContent
-    }
-    Content.findOne({
-        _id: commentId
-    }).then(function (content) {
-        content.comments.push(commentData);
-        return content.save();
-    }).then(function (Newcontent) {
-        responseData.code = 0;
-        responseData.msg = '评论成功';
-        responseData.data = Newcontent;
-    })
-})
+
 module.exports = router;

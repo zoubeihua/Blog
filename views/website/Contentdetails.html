@@ -42,60 +42,31 @@
         <p>下一篇：<a href="/news/s/2013-10-21/616.html">柴米油盐的生活才是真实</a></p>
       </div>-->
       <div class="otherlink" style="margin-top:20px;">
-        <h2>评论<b style="margin-left:10px;color:red;">58</b></h2>
+        <h2>评论<b style="margin-left:10px;color:red;" id="commlen"></b></h2>
         <div class="comment clearfix">
           <div class="headImage">
             <img src="/public/web/images/s8.jpg" alt="">
           </div>
           <div class="comments">
-            <textarea rows="" cols=""></textarea>
+            <textarea rows="" cols="" id="commCotent"></textarea>
+            <input type="hidden" id="contentid"  value="{{content.id}}">
             <div class="commsubmit">
-              <p>提交评论</p>
+              <p onclick="comment()">提交评论</p>
             </div>
           </div>
         </div>
-        <ul class="commList">
-          <li class="clearfix">
+        <ul class="commList" id="commList">
+          <!--<li class="clearfix">
             <img src="/public/web/images/s8.jpg" alt="">
             <p>速度离开房间但是法律框架受到法律框架受到法律框架短发垃圾圣诞快乐福建省；大姐夫 sdifdh</p>
             <p class="times">2017-04-12 19:20</p>
-          </li>
-          <li class="clearfix">
-            <img src="/public/web/images/s8.jpg" alt="">
-            <p>速度离开房间但是法律框架受到法律框架受到法律框架短发垃圾圣诞快乐福建省；大姐夫 sdifdh</p>
-            <p class="times">2017-04-12 19:20</p>
-          </li>
-          <li class="clearfix">
-            <img src="/public/web/images/s8.jpg" alt="">
-            <p>速度离开房间但是法律框架受到法律框架受到法律框架短发垃圾圣诞快乐福建省；大姐夫 sdifdh</p>
-            <p class="times">2017-04-12 19:20</p>
-          </li>
-           <li class="clearfix">
-            <img src="/public/web/images/s8.jpg" alt="">
-            <p>速度离开房间但是法律框架受到法律框架受到法律框架短发垃圾圣诞快乐福建省；大姐夫 sdifdh</p>
-            <p class="times">2017-04-12 19:20</p>
-          </li>
-          <li class="clearfix">
-            <img src="/public/web/images/s8.jpg" alt="">
-            <p>速度离开房间但是法律框架受到法律框架受到法律框架短发垃圾圣诞快乐福建省；大姐夫 sdifdh</p>
-            <p class="times">2017-04-12 19:20</p>
-          </li>
-          <li class="clearfix">
-            <img src="/public/web/images/s8.jpg" alt="">
-            <p>速度离开房间但是法律框架受到法律框架受到法律框架短发垃圾圣诞快乐福建省；大姐夫 sdifdh</p>
-            <p class="times">2017-04-12 19:20</p>
-          </li>
-           <li class="clearfix">
-            <img src="/public/web/images/s8.jpg" alt="">
-            <p>速度离开房间但是法律框架受到法律框架受到法律框架短发垃圾圣诞快乐福建省；大姐夫 sdifdh</p>
-            <p class="times">2017-04-12 19:20</p>
-          </li>
-          <li class="clearfix">
-            <img src="/public/web/images/s8.jpg" alt="">
-            <p>速度离开房间但是法律框架受到法律框架受到法律框架短发垃圾圣诞快乐福建省；大姐夫 sdifdh</p>
-            <p class="times">2017-04-12 19:20</p>
-          </li>
+          </li>-->
+          
         </ul>
+         <div class="page" id="pages">
+            <!--<a class="curpage">1</a>
+            <a href="/">2</a>-->
+         </div>
       </div>
     </div>
   </article>
@@ -193,6 +164,9 @@
     </div>-->
   </aside>
   <script src="/public/web/js/silder.js"></script>
+  <script src="/public/web/js/jquery.js"></script>
+  <script src="/public/web/js/comment.js"></script>
+  <script src="/public/web/js/AjaxPage.js"></script>
    <script>
        function HTMLEncode(html) {
             var temp = document.createElement("div");

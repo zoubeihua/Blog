@@ -2,6 +2,9 @@ var express = require('express');
 var router = express.Router();
 //引用数据模型
 var User = require('../models/User');
+var Content = require('../models/Content');
+var multipart = require('connect-multiparty');
+
 /**
  * 注册非空判断逻辑
  * 1.输入的账户名不能为空
@@ -13,12 +16,19 @@ var User = require('../models/User');
 var responseData;
 //初始化对象
 router.use(function(req,res,next){
+    multipart();
     responseData = {
         code:0,
         message:''
     }
     next();
-})
+});
+//上传接口
+router.post('/user/upload',function(req, resp) {
+  console.log(req.body, req.files);
+    
+  // don't forget to delete all req.files when done
+});
 //用户注册逻辑
 router.post('/user/register',function(req,res,next){
     var username = req.body.username;
@@ -53,7 +63,6 @@ router.post('/user/register',function(req,res,next){
         });
         return user.save()
     }).then(function(NewUserInfo){
-        console.log(NewUserInfo);
          responseData.message = '注册成功';
          res.json(responseData);
     })
@@ -114,5 +123,48 @@ router.get('/user/logout',function(req,res){
      req.cookies.set('signed',null);
      responseData.message = '退出成功';
      res.json(responseData);
+})
+
+//评论接口
+router.post('/comment', function (req, res) {
+    var commentId = req.body.commentid || '';
+    var commentData = {
+        username: req.userInfo.username,
+        commenTime: new Date(),
+        commContent: req.body.commContent
+    }
+    Content.findOne({
+        _id: commentId
+    }).then(function (conten) {
+        conten.comments.push(commentData);
+        return conten.save(commentData);
+    }).then(function (Newcontent) {
+        responseData.code = 0;
+        responseData.message = '评论成功';
+        responseData.data = Newcontent;
+        res.json(responseData)
+    })
+})
+
+//获取用户评论内容
+router.get('/commentlist',function(req,res){
+    var commentId = req.query.commentid || '';
+    Content.findOne({
+        _id:commentId
+    }).then(function(comlist){
+        responseData.data = comlist.comments; 
+        res.json(responseData);
+    })
+})
+router.get('/test',function(req,res){
+    var id = req.query.id || '';
+    var jsonas = {
+        user:'michong',
+        password:id
+    }
+    if(id){
+         res.json(jsonas);
+    }
+   
 })
 module.exports = router;
